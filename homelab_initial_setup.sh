@@ -96,7 +96,7 @@ if   [ "$PACKAGE_MGR" == "apt" ]; then
 
   sudo apt -y autoremove
 
-  sudo ufw allow ssh
+  sudo ufw allow 22/tcp
   sudo ufw allow 3389/tcp
 
 elif [ "$PACKAGE_MGR" == "yum" ]; then 
@@ -120,6 +120,25 @@ elif [ "$PACKAGE_MGR" == "yum" ]; then
   sudo firewall-cmd --reload
 
 fi
+
+#
+# --------------------------------------------------------------------------------
+#
+
+echo 
+echo "Ensuring ssh private key"
+echo
+if [ ! -d ~/.ssh ] 
+then
+  mkdir ~/.ssh
+
+  chmod 700 ~/.ssh
+fi	
+
+if [ ! -f ~/.ssh/id_rsa ] 
+then
+  ssh-keygen -b 4096 -N ''  -f ~/.ssh/id_rsa
+fi	
 
 #
 # --------------------------------------------------------------------------------
